@@ -17,9 +17,41 @@ enum custom_keycodes {
     QMK_ENG = SAFE_RANGE,
     QMK_RUS,
     QMK_SWTCH,
+    LINUX,
+    UNDO,
+    CUT,
+    COPY,
+    PASTE,
+    SALL,
+    RELOAD,
+    SAVE,
+    NEWTAB,
+    QUIT,
+    CLOSE,
+    FIND,
+    PUSH,
+    COMM,
+    // REDO,
 };
+//   // ╭─────────────────────────────────────────────╮ ╭─────────────────────────────────────────────╮
+//          QUIT,   CLOSE,   FIND,   PUSH,   LINUX,    DF(L_COLEMAK),   KC_NO,    KC_NO,   KC_NO,   QK_BOOT,
+//   // ├─────────────────────────────────────────────┤ ├─────────────────────────────────────────────┤
+//          SALL, RELOAD, SAVE,  NEWTAB,      KC_NO,    DF(L_QWERTY),   KC_MPRV,  KC_VOLD, KC_VOLU, KC_MNXT,
+//   // ├─────────────────────────────────────────────┤ ├─────────────────────────────────────────────┤
+//         UNDO,   CUT,   COPY,   KC_NO,       PASTE,    QMK_ENG,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
+//   // ╰─────────────────────────────────────────────┤ ├─────────────────────────────────────────────╯
+//                       KC_NO, KC_NO, KC_NO, KC_MUTE,    KC_MUTE, KC_MSTP, KC_MPLY,  KC_M
+
+// uint8_t mod_state;
+// bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+//     static uint16_t my_hash_timer;
+//     static bool isLinux = false;
+//     mod_state = get_mods();
+//     switch (keycode) {
+
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    static bool isLinux = false;
     switch (keycode) {
     case QMK_ENG:
         if (record->event.pressed) {
@@ -117,6 +149,137 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             break;
         }
+        case LINUX:
+            if (record->event.pressed) {
+                isLinux = !isLinux;
+            }
+            return false;
+        case COPY:
+            if (record->event.pressed) {
+                if (isLinux) {
+                    tap_code16(LCTL(KC_C));
+                } else {
+                    tap_code16(LGUI(KC_C));
+                }
+                return false;
+            }
+        case PASTE:
+            if (record->event.pressed) {
+                if (isLinux) {
+                    tap_code16(LCTL(KC_V));
+                } else {
+                    tap_code16(LGUI(KC_V));
+                }
+            return false;
+            }
+        case CUT:
+            if (record->event.pressed) {
+                if (isLinux) {
+                    tap_code16(LCTL(KC_X));
+                } else {
+                    tap_code16(LGUI(KC_X));
+                }
+                return false;
+            }
+        case UNDO:
+            if (record->event.pressed) {
+                if (isLinux) {
+                    tap_code16(LCTL(KC_Z));
+                } else {
+                    tap_code16(LGUI(KC_Z));
+                }
+                return false;
+            }
+        // case REDO:
+        //     if (record->event.pressed) {
+        //         if (isLinux) {
+        //             tap_code16(LCTL(KC_Y));
+        //         } else {
+        //             tap_code16(LSG(KC_Z));
+        //         }
+        //         return false;
+        //     }
+        case SALL:
+            if (record->event.pressed) {
+                if (isLinux) {
+                    tap_code16(LCTL(KC_A));
+                } else {
+                    tap_code16(LGUI(KC_A));
+                }
+                return false;
+            }
+        case RELOAD:
+            if (record->event.pressed) {
+                if (isLinux) {
+                    tap_code16(LCTL(KC_R));
+                } else {
+                    tap_code16(LGUI(KC_R));
+                }
+                return false;
+            }
+        case SAVE:
+            if (record->event.pressed) {
+                if (isLinux) {
+                    tap_code16(LCTL(KC_S));
+                } else {
+                    tap_code16(LGUI(KC_S));
+                }
+                return false;
+            }
+        case NEWTAB:
+            if (record->event.pressed) {
+                if (isLinux) {
+                    tap_code16(LCTL(KC_T));
+                } else {
+                    tap_code16(LGUI(KC_T));
+                }
+                return false;
+            }
+        case QUIT:
+            if (record->event.pressed) {
+                if (isLinux) {
+                    tap_code16(LCTL(KC_Q));
+                } else {
+                    tap_code16(LGUI(KC_Q));
+                }
+                return false;
+            }
+        case CLOSE:
+            if (record->event.pressed) {
+                if (isLinux) {
+                    tap_code16(LCTL(KC_W));
+                } else {
+                    tap_code16(LGUI(KC_W));
+                }
+                return false;
+            }
+        case FIND:
+            if (record->event.pressed) {
+                if (isLinux) {
+                    tap_code16(LCTL(KC_F));
+                } else {
+                    tap_code16(LGUI(KC_F));
+                }
+                return false;
+            }
+        case PUSH:
+            if (record->event.pressed) {
+                if (isLinux) {
+                    tap_code16(LCTL(KC_P));
+                } else {
+                    tap_code16(LGUI(KC_P));
+                }
+                return false;
+            }
+        case COMM:
+            if (record->event.pressed) {
+                if (isLinux) {
+                    tap_code16(LCTL(KC_SLSH));
+                } else {
+                    tap_code16(LGUI(KC_SLSH));
+                }
+                return false;
+            }
     }
     return true;
 };
@@ -231,11 +394,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [L_MEDIA] = LAYOUT_split_3x5_4(
   // ╭─────────────────────────────────────────────╮ ╭─────────────────────────────────────────────╮
-         QK_BOOT, KC_NO,   KC_NO,   KC_NO,   KC_NO,    DF(L_COLEMAK),   KC_NO,    KC_NO,   KC_NO,   KC_NO,
+         QUIT,   CLOSE,   FIND,   PUSH,   LINUX,    DF(L_COLEMAK),   KC_NO,    KC_NO,   KC_NO,   QK_BOOT,
   // ├─────────────────────────────────────────────┤ ├─────────────────────────────────────────────┤
-         KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, KC_NO,    DF(L_QWERTY),   KC_MPRV,  KC_VOLD, KC_VOLU, KC_MNXT,
+         SALL, RELOAD, SAVE,  NEWTAB,      KC_NO,    DF(L_QWERTY),   KC_MPRV,  KC_VOLD, KC_VOLU, KC_MNXT,
   // ├─────────────────────────────────────────────┤ ├─────────────────────────────────────────────┤
-         KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,    QMK_ENG,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
+        UNDO,   CUT,   COPY,   KC_NO,       PASTE,    QMK_ENG,   KC_NO,   KC_NO,   KC_NO,   COMM,
   // ╰─────────────────────────────────────────────┤ ├─────────────────────────────────────────────╯
                       KC_NO, KC_NO, KC_NO, KC_MUTE,    KC_MUTE, KC_MSTP, KC_MPLY,  KC_M
   //                 ╰─────────────────────────────╯ ╰─────────────────────────────────╯
